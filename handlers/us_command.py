@@ -17,12 +17,12 @@ cur = db.cursor()
 @rout.startup()
 async def setup_my_commands():
     bot_commands = [
-        BotCommand(command="/start", description="Начало работы с ботом"),
-        BotCommand(command="/help", description="Помощь с командами"),
-        BotCommand(command="/rules", description="Правила для постинга фото"),
-        BotCommand(command="/content", description="Предложение контента"),
-        BotCommand(command="/partner", description="Реклама, партнерство и т.п предложения"),
-        BotCommand(command="/reit", description="Оценка паблика и бота")
+    BotCommand(command="/start", description="Начало работы с ботом"),
+    BotCommand(command="/help", description="Помощь с командами"),
+    BotCommand(command="/rules", description="Правила для постинга фото"),
+    BotCommand(command="/content", description="Предложение контента"),
+    BotCommand(command="/partner", description="Реклама, партнерство и т.п предложения"),
+    BotCommand(command="/reit", description="Оценка паблика и бота")
     ]
     await Bot.set_my_commands(bot_commands)
 
@@ -60,8 +60,8 @@ async def help(message: Message):
 @rout.message(Command('content'))
 async def content(message: Message):
     await message.answer(text='Ну давай, порадуй нас красивым контентом',
-        parse_mode=ParseMode.HTML,
-        reply_markup=kbord.button())
+    parse_mode=ParseMode.HTML,
+    reply_markup=kbord.button())
     cur.execute(f"DELETE FROM `content` WHERE users = '{message.from_user.id}'")
     db.commit()
 

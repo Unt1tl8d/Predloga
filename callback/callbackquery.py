@@ -132,11 +132,8 @@ async def vote_callback(callback: types.CallbackQuery):
             contid = items[0]
             cur.execute(f"SELECT * FROM save_content WHERE id = {contid}")
             items = cur.fetchall()
-            try:
-                for i in items:
-                    cur.execute(f"DELETE FROM `save_content` WHERE id = '{contid}'")
-            except:
-                pass
+            for i in items:
+                cur.execute(f"DELETE FROM `save_content` WHERE id = '{contid}'")
             db.commit()
             await Bot.edit_message_text(text=f'@{callback.from_user.username} контент объективно пошел нахуй',
                                         chat_id=config.predloga, message_id=callback.message.message_id)
