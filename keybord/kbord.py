@@ -13,3 +13,10 @@ def cancel():
     button_row = [cancel]
     markup = ReplyKeyboardMarkup(keyboard=[button_row],resize_keyboard=True)
     return markup
+
+def all():
+    end = KeyboardButton(text="Товары")
+    cancel = KeyboardButton(text="Тех поддержка")
+    button_row = [end, cancel]
+    markup = ReplyKeyboardMarkup(keyboard=[button_row],resize_keyboard=True)
+    return markup

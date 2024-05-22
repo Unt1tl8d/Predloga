@@ -1,5 +1,6 @@
 import sqlite3
-from aiogram import Router, Bot
+import re
+from aiogram import Bot, Router, types
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import Message, BotCommand
@@ -14,22 +15,23 @@ rout = Router()
 db = sqlite3.connect('data\content.db')
 cur = db.cursor()
 
+
 @rout.startup()
 async def setup_my_commands():
     bot_commands = [
-    BotCommand(command="/start", description="Начало работы с ботом"),
     BotCommand(command="/help", description="Помощь с командами"),
     BotCommand(command="/rules", description="Правила для постинга фото"),
+    BotCommand(command="/subscription", description="Покупка привата канала"),
     BotCommand(command="/content", description="Предложение контента"),
     BotCommand(command="/partner", description="Реклама, партнерство и т.п предложения"),
-    BotCommand(command="/reit", description="Оценка паблика и бота")
+    BotCommand(command="/reit", description="Оценка паблика и бота"),
     ]
     await Bot.set_my_commands(bot_commands)
 
 
 @rout.message(Command('start'))
 async def start(message: Message):
-    await message.answer('Приветствую тебя в боте канала @Telopodpischicy, я могу как отправить твой как контент который ты хочешь предложить так и предложение по рекламе и т.п\n\nКоманда которая поможет тебе разобраться /help', reply_markup=ReplyKeyboardRemove())
+    await message.answer('Приветствую тебя в боте канала @Telopodpischicy, я могу как отправить твой как контент который ты хочешь предложить так и предложение по рекламе и т.п\n\nКоманда которая поможет тебе разобраться /help\n\nЧтобы отправить свой контент пиши /content', reply_markup=ReplyKeyboardRemove())
 
 
 @rout.message(Command('reit'))
@@ -51,11 +53,13 @@ async def rules(message: Message):
 @rout.message(Command('help'))
 async def help(message: Message):
     await message.answer(F'Привет! Я готов помочь тебе понять как я работаю.\n\n\
-/rules - это правила для того чтоб твое предложение контента одобрили.\n\n\
+/rules - правила для того чтоб твое предложение контента одобрили.\n\n\
 /content - c помощью нее ты сможешь предложить свой контент в наш канал.(Если хочешь свою подпись к фото в паблике, то подписывай фото)\n\n\
-/partner - это команда для предложений по рекламе, сотруднечеству и т.п, после того как ты ее пропишешь надо будет ждать когда с тобой\
-свяжется человек который за это отвечает через меня т.е бота.', reply_markup=ReplyKeyboardRemove())
+/partner - команда для предложений по рекламе, сотруднечеству и т.п, после того как ты ее пропишешь и отправишь предложение надо будет ждать когда с тобой\
+свяжется человек который за это отвечает через меня т.е бота.\n\n\
+/subscription - команда для покупки привата нашего канала в котором много сочного контента', reply_markup=ReplyKeyboardRemove())
     return message
+
 
 @rout.message(Command('content'))
 async def content(message: Message):
@@ -66,6 +70,12 @@ async def content(message: Message):
     db.commit()
 
 
+@rout.message(Command('subscription'))
+async def sub(message:Message):
+    msg = message.answer(text='Подписка навсегда 300p\nПодписка на месяц 100p', reply_markup=Inlinekbord.product())
+    return msg
+
+
 @rout.message(Command('partner'))
 async def partner(message: Message):
     print(message.chat.id, message.from_user.id)
@@ -74,6 +84,30 @@ async def partner(message: Message):
     await message.answer(text='Теперь можешь писать свое предложение, не корректные предложения сразу будут удаляться!', reply_markup=Inlinekbord.cancel())
     db.commit()
 
+
+@rout.message(Command('allcont'))
+async def allcont(message:Message):
+    cur.execute(f"SELECT users, photo, video FROM content ORDER BY users DESC")
+    items = cur.fetchall()
+    print(items)
+    if items[0] == (1,'1','1'):
+            print('try')
+            print(items[0])
+            await Bot.send_message(chat_id=message.chat.id, text='База пустая, приходи позже')
+    else:
+        try:    
+            for i in items:
+                if i[1] == None:
+                    print(i[0])
+                    await Bot.send_video(chat_id=message.chat.id,caption=str(i[0]), video=i[2])
+                else:
+                    print(i[0])
+                    await Bot.send_photo(chat_id=message.chat.id,caption=str(i[0]), photo=i[1])
+        except:
+            await Bot.send_message(chat_id=message.chat.id, text='Это все фото"')   
+
 @rout.message(Command('ls'))
 async def ls(message: Message):
-    await Bot.send_message(chat_id='6415335814', text='Чтоб написать предложение админу напиши /partner')
+    ids = [877909465,6069640212,6322299949,2142725920,6015594203]
+    for i in ids:
+        await Bot.send_message(chat_id=i, text='Напиши /partner еще раз, бот почемуто не воркал, но я все починил')
