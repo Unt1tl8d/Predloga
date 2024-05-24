@@ -213,62 +213,73 @@ async def vote_callback(callback: types.CallbackQuery):
     if callback.data == '1':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за оценку!\n\nЕсли не сложно напиши ему @Iydihdihc8t что тебе не нравится.',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '2':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за оценку!\n\nЕсли не сложно напиши ему @Iydihdihc8t что тебе не нравится.',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '3':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за оценку!\n\nЕсли не сложно напиши ему @Iydihdihc8t что тебе не нравится.',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '4':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за оценку!\n\nЕсли не сложно напиши ему @Iydihdihc8t что тебе не нравится.',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '5':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за оценку!\n\nЕсли не сложно напиши ему @Iydihdihc8t что тебе не нравится.',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '6':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за хорошую оценку!\n',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '7':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за хорошую оценку!\n',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '8':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за хорошую оценку!\n',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '9':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за хорошую оценку!\n',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
         db.commit()
     if callback.data == '10':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за хорошую оценку!\n',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        cur.execute(f"INSERT INTO rait (`id`, chatid, username, rait) VALUES (?, ?, ?, ?)",
-                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data)))
+        cur.execute(f"""UPDATE rait SET devident = devident + {callback.data}, divider = divider + 1 WHERE id = 1""")
+        cur.execute(f"INSERT INTO rait (`id`, chatid, username, devident, divider) VALUES (?, ?, ?, ?, ?)",
+                    (callback.message.message_id, callback.from_user.id, callback.from_user.username, int(callback.data), 1))
+        db.commit()
         db.commit()
     if callback.data == "anon":
         try:

@@ -36,17 +36,15 @@ async def start(message: Message):
 
 @rout.message(Command('reit'))
 async def reit(message: Message):
-    cur.execute(f"SELECT rait FROM rait")
+    cur.execute(f"SELECT devident, divider FROM rait")
     items = cur.fetchall()
-    rait = 0
-    m = 0
-    for i in items:
-        print(i)
-        rait = rait + i[0]
-        m = m + 1
-    print(m, rait)
-    g = rait / m
-    await message.answer(f'Оценка канала и бота на данный момент - {round(g, 1)}\n\n@{message.from_user.username} на сколько ты оценишь наш канал и бота?', reply_markup=Inlinekbord.reit())
+    items = items[0]
+    print(items[0])
+    devident = items[0]
+    devider = items[1]
+    g = devident / devider
+    print('Rait = '+g)
+    await message.answer(f'Оценка канала и бота на данный момент - {round(g, 1)}\n\n@{message.from_user.username} тебе нравится наш канал и бот?(в будущем будет 10 бальная шкала)', reply_markup=Inlinekbord.reit())
 
 
 @rout.message(Command('rules'))
