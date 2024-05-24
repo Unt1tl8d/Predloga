@@ -210,10 +210,6 @@ async def vote_callback(callback: types.CallbackQuery):
                                         chat_id=config.predloga, message_id=callback.message.message_id)
         except:
             await Bot.send_message(text=f'Напиши сене я по пизде пошел', chat_id=config.predloga)
-    if callback.data == "cool":
-        await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за оценку!\n',
-                                    chat_id=callback.message.chat.id, message_id=callback.message.message_id)
-        await Bot.send_message(text=f'@{callback.from_user.username}({callback.from_user.id}) нам поставил 👍!!!',chat_id=config.predloga)
     if callback.data == '1':
         await Bot.edit_message_text(text=f'@{callback.from_user.username} спасибо за оценку!\n\nЕсли не сложно напиши ему @Iydihdihc8t что тебе не нравится.',
                                     chat_id=callback.message.chat.id, message_id=callback.message.message_id)
