@@ -43,8 +43,8 @@ async def reit(message: Message):
     devident = items[0]
     devider = items[1]
     g = devident / devider
-    print('Rait = '+g)
-    await message.answer(f'Оценка канала и бота на данный момент - {round(g, 1)}\n\n@{message.from_user.username} тебе нравится наш канал и бот?(в будущем будет 10 бальная шкала)', reply_markup=Inlinekbord.reit())
+    print(f'Rait = {g}')
+    await message.answer(f'Оценка канала и бота на данный момент - {round(g, 1)}\n\n@{message.from_user.username}, а во ты сколько оценишь наш канал и бота?', reply_markup=Inlinekbord.reit())
 
 
 @rout.message(Command('rules'))
