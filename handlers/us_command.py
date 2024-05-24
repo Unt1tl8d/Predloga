@@ -34,8 +34,7 @@ async def start(message: Message):
     await message.answer('Приветствую тебя в боте канала @Telopodpischicy, я могу как отправить твой как контент который ты хочешь предложить так и предложение по рекламе и т.п\n\nКоманда которая поможет тебе разобраться /help\n\nЧтобы отправить свой контент пиши /content', reply_markup=ReplyKeyboardRemove())
 
 
-@rout.message(Command('reit'))
-async def reit(message: Message):
+async def reit():
     cur.execute(f"SELECT devident, divider FROM rait")
     items = cur.fetchall()
     items = items[0]
@@ -44,6 +43,12 @@ async def reit(message: Message):
     devider = items[1]
     g = devident / devider
     print(f'Rait = {g}')
+    return g
+
+
+@rout.message(Command('reit'))
+async def msg(message:Message):
+    g = await reit()
     await message.answer(f'Оценка канала и бота на данный момент - {round(g, 1)}\n\n@{message.from_user.username}, а во ты сколько оценишь наш канал и бота?', reply_markup=Inlinekbord.reit())
 
 

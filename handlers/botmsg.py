@@ -59,7 +59,6 @@ async def wait(message: Message):
     try:
         cur.execute(f"SELECT acceptid, userid FROM messages")
         items = cur.fetchone()
-        print(items)
         if message.from_user.id == items[0]:
                         print(message.from_user.username, message.text)
                         await message.send_copy(chat_id=items[1])
@@ -78,7 +77,6 @@ async def wait(message: Message):
     except:
         cur.execute(f"SELECT id FROM partner")
         chat_id = cur.fetchall()
-        print(chat_id)
         for i in chat_id:
             msg = message.text
             i = i[0]

@@ -4,7 +4,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 def solution_cont():
     row_first = (InlineKeyboardButton(text= 'Основной тгк', callback_data='osnova'),
             InlineKeyboardButton(text= 'Приватка', callback_data='privat'))
-    row_second = (InlineKeyboardButton(text="Слова о привате", callback_data="customcapt"),
+    row_second = (InlineKeyboardButton(text="Если ее фото в привате", callback_data="customcapt"),
                   InlineKeyboardButton(text= 'Не постить эту хуйню', callback_data='deny'))
     rows = [row_first, row_second]
     markup = InlineKeyboardMarkup(inline_keyboard=rows)

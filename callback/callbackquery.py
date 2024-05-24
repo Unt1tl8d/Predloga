@@ -9,7 +9,6 @@ from aiogram.enums import ParseMode
 from aiogram.types import ReplyKeyboardRemove, Message
 from keybord import Inlinekbord, kbord 
 from handlers import us_command
-import re
 
 
 Bot = Bot(config.token)
@@ -23,7 +22,7 @@ async def last_msg(callback):
     time.sleep(2)
     await Bot.delete_message(chat_id=callback.message.chat.id, message_id=callback.message.message_id)
     await Bot.send_message(text=f'Теперь надо немножко подождать и мы все запостим😘😘😘', chat_id=callback.message.chat.id, reply_markup=ReplyKeyboardRemove())
-    await Bot.send_message(text=f'@{callback.from_user.username} тебе нравится наш канал и бот?\n(в будущем будет 10 бальная шкала)', chat_id=callback.message.chat.id, reply_markup=Inlinekbord.reit())
+    await Bot.send_message(text=f'Оценка канала и бота на данный момент - {await us_command.reit()}\n\n@{callback.from_user.username}, а во ты сколько оценишь наш канал и бота?\n', chat_id=callback.message.chat.id, reply_markup=Inlinekbord.reit())
 
 
 async def find_cont(callback):
@@ -101,7 +100,7 @@ async def vote_callback(callback: types.CallbackQuery):
         try:
             items = await find_cont(callback)
             contid = items[0]
-            media1 = MediaGroupBuilder(caption=f"Как вам девочка?\n\nP.s Больше её фотографий в привате -- @TeloPodpischicybot - /subscription")
+            media1 = MediaGroupBuilder(caption=f"Контент с предложки от {items[4]} {items[3]}\n\nP.s Больше её фотографий в привате -- @TeloPodpischicybot - /subscription")
             try:
                 cur.execute(f"SELECT photo FROM save_content WHERE id = {contid}")
                 items = cur.fetchall()
@@ -128,6 +127,7 @@ async def vote_callback(callback: types.CallbackQuery):
             await Bot.edit_message_text(text=f'@{callback.from_user.username} контент успешно запощен',
                                         chat_id=config.predloga, message_id=callback.message.message_id)
         except:
+            print('Ошибка в отправке с словами о привате')
             await Bot.send_message(text=f'Напиши сене я по пизде пошел', chat_id=config.predloga)
     if callback.data == "osnova": 
         try:
@@ -135,7 +135,7 @@ async def vote_callback(callback: types.CallbackQuery):
             contid = items[0]
             media1 = MediaGroupBuilder(caption=f"Контент с предложки от {items[4]} {items[3]}\n\nПредложка для ваших фоток - @TeloPodpischicybot")
             try:
-                cur.execute(f"SELECT photo FROM save_content WHERE id = {contid}")
+                cur.execute(f"SELECT photo FROM save_content WHERE id = {contid[5]}")
                 items = cur.fetchall()
                 for i in items:
                     if i == None:
@@ -145,7 +145,7 @@ async def vote_callback(callback: types.CallbackQuery):
             except:
                 pass
             try:
-                cur.execute(f"SELECT video FROM save_content WHERE id = {contid} ORDER BY video DESC")
+                cur.execute(f"SELECT video FROM save_content WHERE id = {contid[5]} ORDER BY video DESC")
                 items = cur.fetchall()
                 for i in items:
                     if i[0] == None:
@@ -160,6 +160,7 @@ async def vote_callback(callback: types.CallbackQuery):
             await Bot.edit_message_text(text=f'@{callback.from_user.username} контент успешно запощен',
                                         chat_id=config.predloga, message_id=callback.message.message_id)
         except:
+            print('Ошибка в отправке в основу')
             await Bot.send_message(text=f'Напиши сене я по пизде пошел', chat_id=config.predloga)
     if callback.data == "privat":
         try:
@@ -167,35 +168,35 @@ async def vote_callback(callback: types.CallbackQuery):
             contid = items[0]
             media1 = MediaGroupBuilder(caption=f"Девочка с предложечки")
             try:
-                cur.execute(f"SELECT photo FROM save_content WHERE id = {contid}")
+                cur.execute(f"SELECT photo FROM save_content WHERE id = {contid[0]} ORDER BY photo DESC")
                 items = cur.fetchall()
                 for i in items:
-                    if i == None:
-                        pass
-                    else:
-                        media1.add_photo(media=i[0])
+                        if i == None:
+                            pass
+                        else:
+                            media1.add_photo(media=i[0])
             except:
                 pass
             try:
-                cur.execute(f"SELECT video FROM save_content WHERE id = {contid} ORDER BY video DESC")
+                cur.execute(f"SELECT video FROM save_content WHERE id = {contid[0]} ORDER BY video DESC")
                 items = cur.fetchall()
                 for i in items:
-                    if i[0] == None:
-                        pass
-                    else:
-                        media1.add_video(media=i[0])
+                        if i == None:
+                            pass
+                        else:
+                            media1.add_video(media=i[0])
             except:
                 pass
-            cur.execute(f"SELECT userid FROM save_content WHERE id = {contid}")
+            cur.execute(f"SELECT userid FROM save_content WHERE id = {contid[0]}")
             items = cur.fetchone()
-            print(items)
             await Bot.send_media_group(media=media1.build(), chat_id=config.privat)
             await Bot.send_message(text='Твои фото были на столько хороши что мы их постонули в приватку, если хочешь постить такое на постоянной основе пиши девелоперу бота, оформим бесплатный приват за это🥰', chat_id=items[0])
             await Bot.edit_message_text(text=f'@{callback.from_user.username} контент успешно запощен',
                                         chat_id=config.predloga, message_id=callback.message.message_id)
-            cur.execute(f"DELETE FROM `save_content` WHERE id = '{contid}'")
+            cur.execute(f"DELETE FROM `save_content` WHERE id = '{contid[0]}'")
             db.commit()
         except:
+            print('Ошибка в отправке в приват')
             await Bot.send_message(text=f'Напиши сене я по пизде пошел', chat_id=config.predloga)
     if callback.data == "deny":
         try:
@@ -321,6 +322,7 @@ async def vote_callback(callback: types.CallbackQuery):
             await Bot.send_message(text=f'Постим фото выше или нет?',
                                    chat_id=config.predloga, parse_mode=ParseMode.HTML, reply_markup=Inlinekbord.solution_cont())        
         except:
+            print('Ошибка в отправке в аноне')
             await Bot.send_message(text=f'Бот говорит ты ничего не отправил, если ты что-то отправил, но бот этого не видит пиши @Iydihdihc8t',
                                    chat_id=callback.message.chat.id, reply_markup=ReplyKeyboardRemove())
     if callback.data == "noanon":
@@ -357,6 +359,7 @@ async def vote_callback(callback: types.CallbackQuery):
             await Bot.send_media_group(media=media.build(), chat_id=config.predloga)
             await Bot.send_message(text=f'Постим фото выше или нет?', chat_id=config.predloga, parse_mode=ParseMode.HTML, reply_markup=Inlinekbord.solution_cont())  
         except:
+            print('Ошибка в отправке в неаноне')
             await Bot.send_message(text=f'Бот говорит ты ничего не отправил, если ты что-то отправил, но бот этого не видит пиши @Iydihdihc8t',
                                          chat_id=callback.message.chat.id, reply_markup=ReplyKeyboardRemove())
     
@@ -412,6 +415,7 @@ async def vote_callback(callback: types.CallbackQuery):
             await Bot.edit_message_text(text='Подписка на приват навсегда 300р',
                                         chat_id=callback.message.chat.id, message_id=callback.message.message_id, reply_markup=Inlinekbord.payment())
         except:
+            print('Ошибка в саб инфинити')
             await Bot.send_message(text=f'Походу я ебланул, напиши мне в лс я решу проблемму @Iydihdihc8t',
                                         chat_id=callback.message.chat.id, reply_markup=ReplyKeyboardRemove())
     if callback.data == "submonth":
@@ -421,6 +425,7 @@ async def vote_callback(callback: types.CallbackQuery):
             await Bot.edit_message_text(text='Подписка на приват на месяц 100р',
                                         chat_id=callback.message.chat.id, message_id=callback.message.message_id, reply_markup=Inlinekbord.payment())
         except:
+            print('Ошибка в саб монс')
             await Bot.send_message(text=f'Походу я ебланул, напиши мне в лс я решу проблемму @Iydihdihc8t',
                                         chat_id=callback.message.chat.id, reply_markup=ReplyKeyboardRemove())
     if callback.data == "back":
@@ -444,6 +449,7 @@ async def vote_callback(callback: types.CallbackQuery):
             await Bot.send_message(text=f"@Iydihdihc8t проверь оплату {items[3]} @{callback.from_user.username}",chat_id=config.buysub, reply_markup=Inlinekbord.solution_pay())
             db.commit()
         except:
+            print('Ошибка в проверке оплаты')
             await Bot.send_message(text=f'Походу я ебланул, напиши мне в лс я решу проблемму @Iydihdihc8t',
                                         chat_id=callback.message.chat.id, reply_markup=ReplyKeyboardRemove())
     if callback.data == "payaccept":
