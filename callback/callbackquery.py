@@ -18,11 +18,13 @@ cur = db.cursor()
 
 
 async def last_msg(callback):
+    g = await us_command.reit()
+    print(g)
     await Bot.edit_message_text(text=f'Загружаю', chat_id=callback.message.chat.id, message_id=callback.message.message_id)
     time.sleep(2)
     await Bot.delete_message(chat_id=callback.message.chat.id, message_id=callback.message.message_id)
     await Bot.send_message(text=f'Теперь надо немножко подождать и мы все запостим😘😘😘', chat_id=callback.message.chat.id, reply_markup=ReplyKeyboardRemove())
-    await Bot.send_message(text=f'Оценка канала и бота на данный момент - {await us_command.reit()}\n\n@{callback.from_user.username}, а во ты сколько оценишь наш канал и бота?\n', chat_id=callback.message.chat.id, reply_markup=Inlinekbord.reit())
+    await Bot.send_message(text=f'Оценка канала и бота на данный момент - {round(g, 1)}\n\n@{callback.from_user.username}, а во ты сколько оценишь наш канал и бота?\n', chat_id=callback.message.chat.id, reply_markup=Inlinekbord.reit())
 
 
 async def find_cont(callback):
@@ -96,13 +98,14 @@ async def find_messager(callback):
 @rout.callback_query()
 async def vote_callback(callback: types.CallbackQuery):
     db.commit()
-    if callback.data == "customcapt": 
+    if callback.data == "customcapt":
         try:
             items = await find_cont(callback)
             contid = items[0]
+            items = items[0]
             media1 = MediaGroupBuilder(caption=f"Контент с предложки от {items[4]} {items[3]}\n\nP.s Больше её фотографий в привате -- @TeloPodpischicybot - /subscription")
             try:
-                cur.execute(f"SELECT photo FROM save_content WHERE id = {contid}")
+                cur.execute(f"SELECT photo FROM save_content WHERE id = {contid[0]}")
                 items = cur.fetchall()
                 for i in items:
                     if i == None:
@@ -112,7 +115,7 @@ async def vote_callback(callback: types.CallbackQuery):
             except:
                 pass
             try:
-                cur.execute(f"SELECT video FROM save_content WHERE id = {contid} ORDER BY video DESC")
+                cur.execute(f"SELECT video FROM save_content WHERE id = {contid[0]} ORDER BY video DESC")
                 items = cur.fetchall()
                 for i in items:
                     if i[0] == None:
@@ -121,7 +124,7 @@ async def vote_callback(callback: types.CallbackQuery):
                         media1.add_video(media=i[0])
             except:
                 pass
-            cur.execute(f"DELETE FROM `save_content` WHERE id = '{contid}'")
+            cur.execute(f"DELETE FROM `save_content` WHERE id = '{contid[0]}'")
             db.commit()
             await Bot.send_media_group(media=media1.build(), chat_id=config.channel)
             await Bot.edit_message_text(text=f'@{callback.from_user.username} контент успешно запощен',
