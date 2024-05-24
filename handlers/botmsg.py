@@ -85,7 +85,7 @@ async def wait(message: Message):
             if message.from_user.id == i:
                 print(user, message.text, message.message_id)
                 cur.execute(f"INSERT INTO partner (`id`, `caption`) VALUES (?, ?)", (user, msg))
-                await message.answer('Хорошо, я записал то что ты хочешь, это все или еще нет?', reply_markup=Inlinekbord.partner())
+                await message.answer('Хорошо, я записал то что ты хочешь, отправляем это админу?', reply_markup=Inlinekbord.partner())
                 db.commit()
 
 
